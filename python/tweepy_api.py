@@ -1,5 +1,5 @@
 import tweepy
-from configparser import ConfigParser  
+from configparser import ConfigParser
 
 class TweepyHandler():
 
@@ -84,7 +84,7 @@ class TweepyHandler():
 
     def connectToTwitter( self, config_section ):
         config = ConfigParser()
-        config.read('config/config.ini')
+        config.read('C:/Users/Edmond/Desktop/side-hustles/python-teach/pp/python/config/config.ini')
         
         if config.has_section( config_section ):
             consumer_key                = config.get( config_section, 'consumer-key')

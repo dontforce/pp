@@ -1,5 +1,5 @@
 from langid.langid import LanguageIdentifier, model
-from models import User
+from Models import User
 from datetime import datetime
 import re
 

@@ -4,61 +4,13 @@ from tweepy import TweepError
 from tweepy_api import TweepyHandler
 from tweet_utils import createNewUser
 
-from functools import total_ordering
+
 from datetime import datetime
 
 
 
 
-@total_ordering
-class User():
-
-    ''' This is a class. Every class has to have a __init__ method that instantiates this object. '''
-
-    ''' The 'self' is required to be in every method a class has. 'self' has to do with referencing this object.
-
-        You instantiate an object by:
-            user = User( <any variables this object requires> )
-
-        This object requires you to pass in a user id and screen name for this user.
-     '''
-    def __init__(self, user_id, screen_name, **kwargs):
-        self.id_str = user_id
-        self.screen_name = screen_name
-        self.friends_count = kwargs.get('friends_count', None)
-        self.followers_count = kwargs.get('followers_count', None)
-        self.verified = kwargs.get('verified', False)
-        self.description = kwargs.get('description', "")
-        self.last_tweet_id = kwargs.get('last_tweet_id', None)
-        self.last_favorite_id = kwargs.get('last_favorite_id', None)
-        self.location = kwargs.get('location', 'None')
-        self.statuses_count = kwargs.get('statuses_count', None)
-        self.favourites_count = kwargs.get('favourites_count', None)
-        self.protected = kwargs.get('protected', False)
-        self.last_updated = kwargs.get('last_update', datetime.now().strftime("%Y-%m-%d %H:%M:%S") )
-
-    # overwrite base object's less than method. (this is for ordering. determines which User object is less than the other)
-    # ex: quoc has 500 followers, i have 300. If we have one quoc User object, and one Edmond User object, 
-    # and you did print( Edmond < Quoc ), it would = True.
-    def __lt__(self, other):
-        return self.followers_count < other.followers_count
-
-    # overwrite base object's toString method
-    def __str__(self):
-        return "id: {}, screenname: {}, followers_count: {}".format(self.id_str, self.screen_name, self.followers_count)
-
-    def setLastUpdated(self, last_update):
-        self.last_updated = last_update
-    
-    def setLastTweetID(self, last_tweet_id):
-        self.last_tweet_id = last_tweet_id
-
-    def setLastFavoriteID(self, last_fav_id):
-        self.last_favorite_id = last_fav_id
-
-
-
-def getTweets( user, max_iterations=2 ):
+def getTweets( tweepyAPI, user, max_iterations=2 ):
     ''' This is a method that takes a User object and gets their tweets from the API. 
         the API call can only return 200 tweets at a time. This is why we have a loop to get more than that if we wanted to.
 
@@ -68,23 +20,27 @@ def getTweets( user, max_iterations=2 ):
 
     # this is a dictionary/map. it stores key-value pairs. in this case, the key is a string datatype, and the value is a list.
     # we are going to store this user's tweets, retweets in here. 
-    tweets = { 'tweets': [ ], 'rts': [ ], 'last_tweet_id': 0 }
+    tweets = { 'tweets': [ ], 'rts': [ ], 'last_tweet_id': 0 } # notice how the dictionary can store multiple types (2 lists, and 1 int). cannot do this in java
 
     num_calls = 0 # number of times we've called the api
     tweet_count = 0 # number of tweets we've got
 
+    kwargs = {}
+    kwargs[ 'count' ] = 200
+    kwargs[ 'include_rts' ] = True
+    kwargs[ 'exclude_replies' ] = True
+    max_tweet_id = user.last_tweet_id
+    num_tweets_scraped = 0
+
+
     # There's 2 ways to loop through data: for loop and while loop.
     while num_calls < max_iterations:
-        kwargs = {}
-        kwargs[ 'count' ] = 200
-        kwargs[ 'include_rts' ] = True
-        kwargs[ 'exclude_replies' ] = True
         
         if max_tweet_id:
             kwargs[ 'max_id' ] = max_tweet_id
         
         # use API to get the tweets for this user.
-        tweets_for_user = self.tweepy_handler.user_timeline( user.id_str, **kwargs )
+        tweets_for_user = tweepyAPI.user_timeline( user.id_str, **kwargs )
 
         # iterate over the tweets for this user
         while True:
@@ -100,8 +56,7 @@ def getTweets( user, max_iterations=2 ):
                 # hasattr is a built in function. we are checking to see if this tweet object has that attribute/property.
                 # if it does, then this tweet is a retweeted tweet, if not, then it is the User's own tweet.
                 if hasattr( tweet, 'retweeted_status' ):
-                    # tweets is a dictionary. you access a dictionary using the keys. 
-                    # in this case, we're gonna add this tweet to the retweets list.
+                    # tweets is a dictionary. you access a dictionary using the keys. in this case, we're gonna add this tweet to the retweets list.
                     tweets['rts'].append( tweet )
                 else:
                     # if the code reached here, then it isn't a retweet, its the user's own tweet. add it to the tweets list.
@@ -110,13 +65,14 @@ def getTweets( user, max_iterations=2 ):
                 max_tweet_id = tweet.id_str
                 num_tweets_scraped += 1
             except TweepError as e:
-                print( e, user.screen_name )
+                print( e, user.screen_name ) # print the error message and which user it was that caused the error. 
                 if 'status code = 503' in e.reason:
                     return None
                 continue
             
+            # can catch multiple exceptions. this lets you handle different errors in different ways. this exception is used to catch StopIteration exception.
             except StopIteration:
-                break
+                break # when we reach the end of all the user's tweets, we `break` out the loop. break is typically used to exit loops on a certain condition.
 
         num_calls += 1
 
@@ -133,9 +89,9 @@ if __name__ == "__main__":
     tweepyAPI = TweepyHandler( 'auth' )
 
     # getting quoc's twitter using API 
-    quoc = tweepyAPI.user_lookup_screennames( quoc )
-    print( "Twitter API gets quoc's twitter and creates a User object. this is what it looks like: {}".format( quoc ) )
-
+    quoc = tweepyAPI.user_lookup_screennames( quoc )[ 0 ] # this returns a List object. grab the first user from the list by doing [ 0 ]
+    print( "Twitter API gets quoc's twitter and creates a User object. this is what it looks like:\n{}".format( quoc ) )
+    
     quoc = createNewUser( quoc )
     print( "converted quoc to a simpler object... {}".format( quoc ) )
 
@@ -153,7 +109,8 @@ if __name__ == "__main__":
 
 
     print( "Calling a method to get all of quocs tweets" )
-    tweets = getTweets( quoc )
+    tweets = getTweets( tweepyAPI, quoc )
+    print( tweets )
 
 
 
