@@ -110,7 +110,10 @@ if __name__ == "__main__":
 
     print( "Calling a method to get all of quocs tweets" )
     tweets = getTweets( tweepyAPI, quoc )
-    print( tweets )
+
+    for idx, tweet in enumerate( tweets['rts'], 0 ):
+        if idx < 5:
+            print( "tweet: {}".format( tweet ) )
 
 
 

@@ -1,0 +1,115 @@
+
+
+
+- after teaching the fundamentals, introduce them to a simple version of the twitter project. Although it'll be a lot to take in,
+they could see how a real program works. Maybe you could alternate between showing them new concepts on the twitter app, 
+and then going more in depth from a fundamental perspective about why that works the way it does.
+- Go through twitter project step by step using the debugger
+
+- update the twitter project continuously to teach them new concepts, better ways of doing simple things, OOP concepts, simple webserver, 
+
+
+
+Course structure:
+
+
+Fast Track Python course. First post clips on youtube, show how to basic shit but for cool projects, then link your website for full details where they can buy the course.
+
+
+Notes:
+	- 
+
+
+Intro:
+	- who am i
+	- why im doing this
+	- why my face is hidden
+
+
+Python Setup (for windows AND mac):
+	- download IDE, python 3.7, pip, any libraries needed for the projects, 
+	- simple python program through terminal
+	- jupyter notebooks
+	- github
+
+
+Python Data Types & Data Structures:
+	- bool, int, float, double, strings, ranges
+	- dict, list, tuple, etc
+	- various useful methods for each
+	- practical example using in jobs for each
+
+
+Python statements/helpful built in methods:
+	- iteration
+	- if/else
+	- list comprehension
+	- type()
+	- casting
+
+
+
+Python Classes, Attributes/Properties:
+	- instaniating classes/objects, init method, class variables, calling class methods
+	- scripts in python, why use them, when to use a class vs a script (twitter example)
+
+
+Object Oriented Programming:
+	- explain the importance of this concept, many job interview questions over this content
+	- Inheritance
+	- Polymorphism
+	- Special methods to overwrite
+	- explain how any class/object you make inherits from pythons general Object that has built in methods. Overwrite some to illustrate this
+
+
+Errors and Exception Handling:
+	- what to do if you get an error
+	- how to handle errors with exception handling
+	- practical use cases on what goes on in corporate
+
+
+Python vs Java:
+	- explain the differences between the largest 2 programming languages, and the pros/cons
+	- possibly create a Java course
+	- show graph that compares popularity of the two
+	- explain how after you learn one language, you understand computers to the point where you can easily learn more languages. the learning curve isnt that steep.
+
+
+Webscraping (separate course? and teaser? ):
+	- webscrape oddshark
+
+
+Basic Flask Webapp:
+	- display top tweets from project
+
+
+Databases:
+	- mongo or mysql
+	- put tweet data in there
+	- teach basic queries
+
+
+
+Python Comprehension, Generators, and Lambda Expressions:
+	- explain when to use each
+	- comprehension is used all the time in corporate world, many people like to show off that they could do this complex set of operations in one line. its what makes python beautiful
+	- generators and yield, next and ranges,
+	- various different types of list comps: reg, conditional, any, all, nested
+	- map, filter, reduce
+
+
+Introduction to Binary:
+	- understanding binary
+	- where it fits in the grand scheme of computers/programming
+	- do you really need this? not really, but its important for interviews
+
+
+Process to getting a job in software engineering (MOST important):
+	- explain that the demand is very high for quality engineers. 
+	- the general route ( school for comp sci -> career fair -> interviews -> intern -> more school -> interviews again -> real job )
+	- explain that anyone can become a software engineer. many of my friends were studying engineering and switched because they could not find a job in their field. 
+	Engineers/math majors generally tend to study the same type of skills needed to become a software engineer (intense logic), so they end up becoming amazing software engineers, many times even better than your average computer scientist.
+	- go in depth on the interviewing process. show leetcode, show them the cracking the coding interview book. tell them to grind leetcode for months before they want to start interviewing.
+	- college interview process generally a bit easier for first timers. explain amount of rounds, hierarchy of companies, where you should aim first, different routes you can take.
+	- explain the career path of a software engineer, and all the routes they can take. cloud, backend, front end, full stack, entrepreneur, tech or finance route, 
+	- behavioral + tech interview, several rounds of interviews 
